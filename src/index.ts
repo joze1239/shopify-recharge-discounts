@@ -8,7 +8,6 @@ const syncDiscounts = async (inputFile: string) => {
     console.log('start...');
 
     // Delete current recharge discounts
-    
     try {
         await deleteAllDiscounts();
     } catch (err) {
@@ -93,7 +92,6 @@ const syncDiscounts = async (inputFile: string) => {
 
 
         }
-        await addDiscounts(rechargeDiscounts);
         page += 1;
     }
 
