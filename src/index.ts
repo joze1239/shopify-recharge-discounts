@@ -8,13 +8,13 @@ const syncDiscounts = async (inputFile: string) => {
     console.log('start...');
 
     // Delete current recharge discounts
-    /*
+    
     try {
         await deleteAllDiscounts();
     } catch (err) {
         console.log(err);
     }
-    */
+    
     
 
     // Read csv discounts
@@ -30,12 +30,13 @@ const syncDiscounts = async (inputFile: string) => {
     while (isData) {
         const discounts = await getShopifyDiscounts(page, 250);
 
-        if (!discounts.price_rules || page > 1) {
+        if (!discounts.price_rules || page > 5) {
             isData = false;
             continue;
         }
         for (const d of discounts.price_rules) {
             const createdDate = new Date(d.created_at);
+            let skipDiscount = false;
             if (createdDate.getFullYear() < 2018) {
                 continue;
             }
@@ -66,6 +67,9 @@ const syncDiscounts = async (inputFile: string) => {
                 if (mapEl) {
                     collectionId = productMap[mapEl];
                 }
+                if(!mapEl && d.entitled_product_ids.some(r=> ignoreMap.includes(r))) {
+                    skipDiscount = true;
+                }
             }
             else if (d.entitled_variant_ids.length) {
                 var mapEl = d.entitled_variant_ids.find(function (element) {
@@ -74,9 +78,13 @@ const syncDiscounts = async (inputFile: string) => {
                 if (mapEl) {
                     collectionId = variantsMap[mapEl];
                 }
+
+                if(!mapEl && d.entitled_variant_ids.some(r=> ignoreMap.includes(r))) {
+                    skipDiscount = true;
+                }
             }
 
-            if (discountsMap.has(d.title)) {
+            if (discountsMap.has(d.title) && !skipDiscount) {
                 const rechargeDiscount = discountsMap.get(d.title);
                 rechargeDiscount.applies_to_id = collectionId ? collectionId : null;
                 rechargeDiscount.applies_to_resource = collectionId ? 'shopify_collection_id' : null;
