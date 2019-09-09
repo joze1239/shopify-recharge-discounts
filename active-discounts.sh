@@ -1,0 +1,1 @@
+cat data/discounts_export_1.csv | grep "Active" > data/discounts.csv
