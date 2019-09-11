@@ -97,7 +97,6 @@ const syncDiscounts = async (inputFile: string) => {
 
     // Add discounts to Recharge
     await addDiscounts(rechargeDiscounts);
-    
     console.log('end');
 }
 
