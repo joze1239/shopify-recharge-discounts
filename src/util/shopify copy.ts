@@ -5,20 +5,20 @@ const SHOPIFY_API_TOKEN = 'NzI5MjFkN2QxY2RmZDkwNmY2NGMxMmUxNmUyZmMyMDM6NjcyZjNjY
 
 
 // Collection ids
-const FOUNDATION_ID = 150315171928;
-const SMARTBED_ID = 150315204696;
-const ULTIMATE_PILLOW_ID = 150315303000;
-const POD_ID = 150315335768;
-const WATERPROOF_PROTECTOR_ID = 150315466840;
-const GRAVITY_BLANKET_ID = 150315565144;
+const FOUNDATION_ID = 64765788207;
+const SMARTBED_ID = 64765820975;
+const ULTIMATE_PILLOW_ID = 64765853743;
+const POD_ID = 64765886511;
+const WATERPROOF_PROTECTOR_ID = 64765919279;
+const GRAVITY_BLANKET_ID = 64765952047;
 
 // site.eightsleep -> test-eight.myshopify
 export const collectionMap = {
-    33903804504: 33903804504, // Accesories
-    60371501144: 60371501144, // All Mattresses - Marketing
-    426554691: 426554691, // Mattresses (NEW)
-    367765635: 367765635, // Mattresses
-    13247709224: 13247709224, // All Products Except Gift Card
+    33903804504: 453532548, // Accesories
+    60371501144: 64600932399, // All Mattresses - Marketing
+    426554691: 453532868, // Mattresses (NEW)
+    367765635: 453532868, // Mattresses
+    13247709224: 64601292847, // All Products Except Gift Card
 }
 
 export const productMap = {

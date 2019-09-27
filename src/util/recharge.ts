@@ -1,6 +1,9 @@
 import fetch from 'node-fetch';
 
-const RECHARGE_API_TOKEN = '1205a8f93fbe6e78af79993ed7877573a4c60a8038bb31d294f0f5e8';
+const RECHARGE_API_TOKEN = 'cbe1c6c5b71963d9f6ce06efddfe6ea753fce749b6211752d629d28e';
+
+const sleep = (waitTimeInMs) => new Promise(resolve => setTimeout(resolve, waitTimeInMs));
+
 
 export interface RechargeDiscount {
     code?: string;
@@ -47,14 +50,15 @@ export const mapShipifyCsvDiscountToRechargeDiscount = (data: string[]): Recharg
 export const addDiscounts = async (discounts: RechargeDiscount[]) => {
     let promises = [];
     let total = 0;
-    const maxPromises = 20;
+    const maxPromises = 5;
     for (const discount of discounts) {
         promises.push(postDiscount(discount));
+        await sleep(10000);
 
-        if(promises.length > maxPromises) {
+        if (promises.length > maxPromises) {
             await Promise.all(promises);
             promises = [];
-            total += maxPromises; 
+            total += maxPromises;
             console.log(`Progress total: ${total}`);
         }
     }
@@ -68,9 +72,9 @@ export const deleteAllDiscounts = async () => {
     let isData = true;
     let page = 1;
 
-    while(isData) {
-        const {discounts} = await getAllDiscounts(page);
-        if(!discounts.length) {
+    while (isData) {
+        const { discounts } = await getAllDiscounts(page);
+        if (!discounts.length) {
             isData = false;
             continue;
         }
@@ -78,7 +82,7 @@ export const deleteAllDiscounts = async () => {
         for (const d of discounts) {
             await disableDiscount(d.id);
             await deleteDiscount(d.id);
-            
+
         }
         page += 1;
     }
@@ -92,38 +96,38 @@ const disableDiscount = async (id: number) => {
             body: JSON.stringify({
                 status: 'fully_disabled'
             }),
-            headers: { 
+            headers: {
                 'x-recharge-access-token': RECHARGE_API_TOKEN
-             },
+            },
         });
         return res.json();
     } catch (err) {
         console.log('disableDiscount ERROR', err);
     }
-} 
+}
 
 const deleteDiscount = async (id: number) => {
     try {
         const res = await fetch(`https://api.rechargeapps.com/discounts/${id}`, {
             method: 'DELETE',
-            headers: { 
+            headers: {
                 'x-recharge-access-token': RECHARGE_API_TOKEN
-             },
+            },
         });
         return res;
     } catch (err) {
         console.log('deleteDiscount ERROR', err);
     }
-} 
+}
 
 
 const getAllDiscounts = async (page: number) => {
     try {
         const res = await fetch(`https://api.rechargeapps.com/discounts?page=${page}`, {
             method: 'GET',
-            headers: { 
+            headers: {
                 'x-recharge-access-token': RECHARGE_API_TOKEN
-             },
+            },
         });
         return res.json();
     } catch (err) {
@@ -138,12 +142,15 @@ const postDiscount = async (discount: RechargeDiscount) => {
         const res = await fetch('https://api.rechargeapps.com/discounts', {
             method: 'post',
             body: JSON.stringify(discount),
-            headers: { 
+            headers: {
                 'Content-Type': 'application/json',
                 'x-recharge-access-token': RECHARGE_API_TOKEN
-             },
+            },
         });
-        return res.json();
+        if (res.status !== 200) {
+            console.log('res.status !== 200', res.status, res.statusText, discount)
+        }
+        return res;
     } catch (err) {
         console.log('postDiscount ERROR', err);
     }

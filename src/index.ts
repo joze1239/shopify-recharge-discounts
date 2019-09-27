@@ -15,7 +15,7 @@ const syncDiscounts = async (inputFile: string) => {
     }
     
     
-
+    
     // Read csv discounts
     let discountsCsv: any = await readCSV(inputFile);
     const rechargeDiscountsCsv = discountsCsv.map(disc => mapShipifyCsvDiscountToRechargeDiscount(disc));
@@ -29,7 +29,7 @@ const syncDiscounts = async (inputFile: string) => {
     while (isData) {
         const discounts = await getShopifyDiscounts(page, 250);
 
-        if (!discounts.price_rules || page > 5) {
+        if (!discounts.price_rules || page > 6) {
             isData = false;
             continue;
         }
@@ -97,6 +97,7 @@ const syncDiscounts = async (inputFile: string) => {
 
     // Add discounts to Recharge
     await addDiscounts(rechargeDiscounts);
+    
     console.log('end');
 }
 
