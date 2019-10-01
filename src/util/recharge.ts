@@ -9,8 +9,8 @@ export interface RechargeDiscount {
     code?: string;
     discount_type?: string;
     value?: number;
+    usage_limit?: number;
     duration?: string; // forever, usage_limit, single_use
-    duration_usage_limit?: number; //  This parameter is used and is required, when duration is set to usage_limit.
     status?: string;
     starts_at?: string;
     ends_at?: string;
@@ -39,8 +39,8 @@ export const mapShipifyCsvDiscountToRechargeDiscount = (data: string[]): Recharg
         code: data[0],
         value: Math.abs(Number(data[1])),
         discount_type: data[2],
-        duration: usageLimit ? 'usage_limit' : 'forever',
-        duration_usage_limit: usageLimit ? Number(usageLimit) : null,
+        usage_limit: Number(usageLimit) || undefined,
+        duration: 'single_use',
         status: 'enabled',
         starts_at: startsAt,
         ends_at: endsAt
