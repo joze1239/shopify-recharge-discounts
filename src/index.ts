@@ -19,9 +19,15 @@ const syncDiscounts = async (inputFile: string) => {
     // Read csv discounts
     let discountsCsv: any = await readCSV(inputFile);
     const rechargeDiscountsCsv = discountsCsv.map(disc => mapShipifyCsvDiscountToRechargeDiscount(disc));
+
+    // rechargeDiscountsCsv = rechargeDiscountsCsv.filter(d => d.usage_limit > 2);
+
+
     var discountsMap: Map<string, RechargeDiscount> = new Map(rechargeDiscountsCsv.map(i => [i.code, i]));
 
     const rechargeDiscounts = [];
+
+ 
 
     // Read discounts from Shopify API
     let page = 1;

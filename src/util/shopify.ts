@@ -1,5 +1,6 @@
 import fetch from 'node-fetch';
 
+
 const SHOPIFY_API_URL = 'https://@eight-sleep.myshopify.com/admin/api/2019-07';
 const SHOPIFY_API_TOKEN = 'NzI5MjFkN2QxY2RmZDkwNmY2NGMxMmUxNmUyZmMyMDM6NjcyZjNjYTNhODRkMzFiNzYzOTAyYjY0YjA2YzE1YjM=';
 

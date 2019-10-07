@@ -35,6 +35,7 @@ export const mapShipifyCsvDiscountToRechargeDiscount = (data: string[]): Recharg
     const usageLimit = data[4];
     const startsAt = data[6] ? data[6].split(' ')[0] : null;
     const endsAt = data[7] ? data[7].split(' ')[0] : null;
+
     return {
         code: data[0],
         value: Math.abs(Number(data[1])),
@@ -53,7 +54,7 @@ export const addDiscounts = async (discounts: RechargeDiscount[]) => {
     const maxPromises = 5;
     for (const discount of discounts) {
         promises.push(postDiscount(discount));
-        await sleep(10000);
+        await sleep(1000);
 
         if (promises.length > maxPromises) {
             await Promise.all(promises);
