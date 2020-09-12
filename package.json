@@ -15,7 +15,7 @@
   },
   "dependencies": {
     "@types/node": "^12.7.4",
-    "node-fetch": "^2.6.0",
+    "node-fetch": "^2.6.1",
     "promised-csv": "^1.0.1"
   }
 }
